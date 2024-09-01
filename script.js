@@ -3,7 +3,7 @@ const display = document.getElementById('display')
 
 const allButtons = document.querySelectorAll('button')
 
-const clear = document.getElementsByClassName('.clear')
+const clear = document.querySelector('.clear')
 const sign = document.getElementsByClassName('.sign')
 const percent = document.getElementsByClassName('.percent')
 
