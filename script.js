@@ -16,21 +16,21 @@ const decimal = document.getElementsByClassName('.decimal')
 const equals = document.getElementsByClassName('.equals')
 
 
-// allButtons.forEach(element => {
-//     element.addEventListener('click', () => {
-//         console.log(element.value)
-//     } )
-// });
 
 let firstNumber = '';
 let secondNumber = '';
-
-
-
 let operator = '';
 
-//Listen operands first time:
+//Add listener to clear all
 
+clear.addEventListener('click', ()=> {
+    display.textContent = 0;
+    firstNumber = ''
+    secondNumber = ''
+})
+
+
+//Listen operands first time:
 
 operands.forEach(element => {
     element.addEventListener ('click', setFirstNumber);
@@ -46,9 +46,7 @@ function setFirstNumber(event){
         });
    }
     displayNumber()
-
 }
-
 
 function displayNumber (){
     display.textContent = firstNumber;
