@@ -4,7 +4,7 @@ const display = document.getElementById('display')
 const allButtons = document.querySelectorAll('button')
 
 const clear = document.querySelector('.clear')
-const sign = document.getElementsByClassName('.sign')
+const sign = document.querySelector('.sign')
 const percent = document.getElementsByClassName('.percent')
 
 const operators = document.getElementsByClassName('.operator')
@@ -17,18 +17,34 @@ const equals = document.getElementsByClassName('.equals')
 
 
 
-let firstNumber = '';
-let secondNumber = '';
+let firstNumber = 0;
+let secondNumber = 0;
 let operator = '';
+let positiveNegative = '+'
 
 //Add listener to clear all
 
 clear.addEventListener('click', ()=> {
-    display.textContent = 0;
-    firstNumber = ''
-    secondNumber = ''
+    // display.textContent = 0;
+    firstNumber = 0;
+    secondNumber = 0;
+    displayNumber()
 })
 
+//Add listener to toggle sign
+
+sign.addEventListener('click', () =>{
+
+    if(firstNumber !==0 ) {
+        if(!isNaN(parseFloat(firstNumber))){
+            firstNumber =-firstNumber
+        }
+        
+    }
+
+    displayNumber()
+    
+})
 
 //Listen operands first time:
 
@@ -37,13 +53,13 @@ operands.forEach(element => {
 });
 
 function setFirstNumber(event){
-   firstNumber +=event.target.value
-   console.log(firstNumber)
 
    if(firstNumber.length ==7){
-        operands.forEach(element => {
-            element.removeEventListener('click', setFirstNumber);
-        });
+        firstNumber = firstNumber
+   } else {
+    firstNumber +=event.target.value
+    console.log(firstNumber)
+
    }
     displayNumber()
 }
