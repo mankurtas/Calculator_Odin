@@ -12,7 +12,7 @@ const operands = document.querySelectorAll('.operand')
 
 const zero = document.getElementById('zero')
 
-const decimal = document.getElementsByClassName('.decimal')
+const decimal = document.querySelector('.decimal')
 const equals = document.getElementsByClassName('.equals')
 
 
@@ -25,10 +25,11 @@ let positiveNegative = '+'
 //Add listener to clear all
 
 clear.addEventListener('click', ()=> {
-    // display.textContent = 0;
     firstNumber = [0];
     secondNumber = 0;
     displayNumber()
+
+    decimal.addEventListener('click', setDecimal)
 })
 
 //Add listener to toggle sign
@@ -43,29 +44,23 @@ sign.addEventListener('click', () =>{
         let current = parseFloat(number);
 
         current = - current;
-
-
-        // let currentString = current.toString();
-
-        // if(!isNaN(current)){
-
-        //     // if(currentString.length ==7 ){
-        //         current = parseInt(currentString.slice(0,-1))
-        //         firstNumber = -current
-        //     // }
-        //     // else{
-        //         firstNumber =-firstNumber
-        //     }
         let numberString = current.toString();
         firstNumber = numberString.split('');
-        // firstNumber = firstNumber.map(char => Number(char));  
     }
         
-    // }
-
     displayNumber()
     
 })
+
+//Funtion to use decimal
+function setDecimal(event) {
+    firstNumber.push(event.target.value)
+    console.log(firstNumber)
+    decimal.removeEventListener('click',setDecimal)
+    displayNumber()
+}
+// Listen Decimal
+decimal.addEventListener('click', setDecimal)
 
 //Listen operands first time:
 
@@ -79,14 +74,12 @@ function setFirstNumber(event){
         firstNumber = firstNumber
     displayNumber()
 
-   } else if (firstNumber[0] == 0){
-    // firstNumber = event.target.value;
+   } else if (firstNumber[0] == 0 && firstNumber.length == 1){
     firstNumber.fill(event.target.value)
     console.log(firstNumber)
     displayNumber()
 
    } else {
-    // firstNumber +=event.target.value
     firstNumber.push(event.target.value)
     console.log(firstNumber)
     displayNumber()
