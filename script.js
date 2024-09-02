@@ -17,7 +17,7 @@ const equals = document.getElementsByClassName('.equals')
 
 
 
-let firstNumber = 0;
+let firstNumber = Array (1).fill(0);
 let secondNumber = 0;
 let operator = '';
 let positiveNegative = '+'
@@ -26,7 +26,7 @@ let positiveNegative = '+'
 
 clear.addEventListener('click', ()=> {
     // display.textContent = 0;
-    firstNumber = 0;
+    firstNumber = [0];
     secondNumber = 0;
     displayNumber()
 })
@@ -35,12 +35,33 @@ clear.addEventListener('click', ()=> {
 
 sign.addEventListener('click', () =>{
 
-    if(firstNumber !==0 ) {
-        if(!isNaN(parseFloat(firstNumber))){
-            firstNumber =-firstNumber
-        }
-        
+    let number = Number(firstNumber.join(''));
+
+
+    if(number !==0 ) {
+
+        let current = parseFloat(number);
+
+        current = - current;
+
+
+        // let currentString = current.toString();
+
+        // if(!isNaN(current)){
+
+        //     // if(currentString.length ==7 ){
+        //         current = parseInt(currentString.slice(0,-1))
+        //         firstNumber = -current
+        //     // }
+        //     // else{
+        //         firstNumber =-firstNumber
+        //     }
+        let numberString = current.toString();
+        firstNumber = numberString.split('');
+        // firstNumber = firstNumber.map(char => Number(char));  
     }
+        
+    // }
 
     displayNumber()
     
@@ -54,17 +75,30 @@ operands.forEach(element => {
 
 function setFirstNumber(event){
 
-   if(firstNumber.length ==7){
+   if(firstNumber.length >5){
         firstNumber = firstNumber
-   } else {
-    firstNumber +=event.target.value
+    displayNumber()
+
+   } else if (firstNumber[0] == 0){
+    // firstNumber = event.target.value;
+    firstNumber.fill(event.target.value)
     console.log(firstNumber)
+    displayNumber()
+
+   } else {
+    // firstNumber +=event.target.value
+    firstNumber.push(event.target.value)
+    console.log(firstNumber)
+    displayNumber()
 
    }
-    displayNumber()
 }
 
 function displayNumber (){
-    display.textContent = firstNumber;
-    console.log(firstNumber.length)
+    display.textContent = firstNumber.join('').toString();
+    console.log(`Lenght: ${firstNumber.length}`)
+    console.log(`Type of: ${typeof(firstNumber)}`)
+    console.log(`First number: ${firstNumber}`)
 }
+
+displayNumber()
