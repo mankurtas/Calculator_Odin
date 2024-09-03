@@ -25,10 +25,14 @@ button {
     box-sizing: border-box;
 }
 
+.clicked {
+    background-color: #f44336; /* Red */
+    color: white;
+}
+
 #container {
     display: flex;
     flex-wrap: wrap;
-    flex-shrink: ;
     background-color: black;
     border: 10px solid rgba(47, 47, 47, 1);
     border-radius: 4px;
