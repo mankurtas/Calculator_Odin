@@ -29,7 +29,6 @@ clear.addEventListener('click', ()=> {
     secondNumber = 0;
     displayNumber()
 
-    decimal.addEventListener('click', setDecimal)
 })
 
 //Add listener to toggle sign
@@ -54,9 +53,14 @@ sign.addEventListener('click', () =>{
 
 //Funtion to use decimal
 function setDecimal(event) {
-    firstNumber.push(event.target.value)
-    console.log(firstNumber)
-    decimal.removeEventListener('click',setDecimal)
+
+    let isFloatNumber = firstNumber.some(item => item == '.')
+
+    if(!isFloatNumber) {
+        firstNumber.push(event.target.value)
+        console.log(firstNumber)
+    }
+    
     displayNumber()
 }
 // Listen Decimal
