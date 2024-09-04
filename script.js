@@ -53,15 +53,23 @@ clear.addEventListener('click', ()=> {
 sign.addEventListener('click', () =>{
 
     let number = Number(firstNumber.join(''));
+    let numberSecond = Number(secondNumber.join(''));
 
 
-    if(number !==0 ) {
+    if(number !==0 && !firstNumberisSet ) {
 
         let current = parseFloat(number);
 
         current = - current;
         let numberString = current.toString();
         firstNumber = numberString.split('');
+    }
+    else {
+        let current = parseFloat(numberSecond);
+
+        current = - current;
+        let numberString = current.toString();
+        secondNumber = numberString.split('');  
     }
         
     displayOutput()
