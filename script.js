@@ -39,6 +39,9 @@ clear.addEventListener('click', ()=> {
     operands.forEach(element => element.removeEventListener('click', setSecondNumber))
 
     operands.forEach(element => element.addEventListener('click', setFirstNumber))
+
+    operators.forEach(element => element.addEventListener('click', setOperator))
+
     operators.forEach(btn => btn.classList.remove('clicked'))
     
     displayOutput()
@@ -69,10 +72,15 @@ sign.addEventListener('click', () =>{
 function setDecimal(event) {
 
     let isFloatNumber = firstNumber.some(item => item == '.')
-    let isSecondFloadNumber = secondNumber.some(item => '.')
-    if(!isFloatNumber) {
+    let isSecondNumber = secondNumber.some(item => item == '.')
+
+    if(!isFloatNumber && !firstNumberisSet) {
         firstNumber.push(event.target.value)
         console.log(firstNumber)
+    } 
+    else if (!isSecondNumber && firstNumberisSet){
+        secondNumber.push(event.target.value)
+        console.log(secondNumber)
     }
     
     displayOutput()
@@ -172,13 +180,13 @@ function displayOutput (){
         display.textContent = secondNumber.join('').toString();
     }
 
-    console.log(`Lenght: ${firstNumber.length}`)
-    console.log(`Type of: ${typeof(firstNumber)}`)
-    console.log(`First number: ${firstNumber}`)
+    console.log(`1st Lenght: ${firstNumber.length}`)
+    console.log(`1st Type of: ${typeof(firstNumber)}`)
+    console.log(`1st irst number: ${firstNumber}`)
     console.log(`Operator ${operator}`)
-    console.log(`Lenght: ${secondNumber.length}`)
-    console.log(`Type of: ${typeof(secondNumber)}`)
-    console.log(`Second number: ${secondNumber}`)
+    console.log(`2nd Lenght: ${secondNumber.length}`)
+    console.log(`2nd Type of: ${typeof(secondNumber)}`)
+    console.log(`2nd Second number: ${secondNumber}`)
 }
 
 displayOutput()
