@@ -18,18 +18,29 @@ const equals = document.getElementsByClassName('.equals')
 
 
 let firstNumber = Array (1).fill(0);
+let firstNumberisSet = false;
+
 let secondNumber = Array (1).fill(0);
+
 let operator = Array (1).fill(0);
+let operatorClicked = false;
 let rezult =[];
 
 //Add listener to clear all
 
 clear.addEventListener('click', ()=> {
     firstNumber = [0];
-    secondNumber = 0;
+    firstNumberisSet = false;
 
-    operands.forEach(btn => btn.addEventListener('click', setFirstNumber))
+    secondNumber = [0];
+    operator = [0];
+    operatorClicked = false;
+
+    operands.forEach(element => element.removeEventListener('click', setSecondNumber))
+
+    operands.forEach(element => element.addEventListener('click', setFirstNumber))
     operators.forEach(btn => btn.classList.remove('clicked'))
+    
     displayOutput()
 
 })
@@ -58,7 +69,7 @@ sign.addEventListener('click', () =>{
 function setDecimal(event) {
 
     let isFloatNumber = firstNumber.some(item => item == '.')
-
+    let isSecondFloadNumber = secondNumber.some(item => '.')
     if(!isFloatNumber) {
         firstNumber.push(event.target.value)
         console.log(firstNumber)
@@ -90,21 +101,54 @@ function setFirstNumber(event){
 
    } else {
     firstNumber.push(event.target.value)
-    console.log(firstNumber)
     displayOutput()
 
    }
 }
 
+//Set second number
+function setSecondNumber(event){
+
+    firstNumberisSet = true;
+    operatorClicked = false;
+
+    operators.forEach(element => {
+        element.removeEventListener ('click', setOperator);
+    });
+
+    if(secondNumber.length >5){
+         secondNumber = secondNumber
+     displayOutput()
+ 
+    } else if (secondNumber[0] == 0 && secondNumber.length == 1){
+     secondNumber.fill(event.target.value)
+     console.log(secondNumber)
+     displayOutput()
+ 
+    } else {
+     secondNumber.push(event.target.value)
+     console.log(secondNumber)
+     displayOutput()
+ 
+    }
+ }
+
+
 //Function get operator
 
 let setOperator = function operatorSet (event){
+
+
     operator.fill(event.target.value)
     operators.forEach(btn => btn.classList.remove('clicked'))
     event.target.classList.toggle('clicked')
 
-    operands.forEach(btn => btn.removeEventListener('click', setFirstNumber))
+    operatorClicked = true;
 
+    operands.forEach(element => element.removeEventListener('click', setFirstNumber))
+
+    operands.forEach(element => element.addEventListener('click', setSecondNumber))
+    displayOutput()
 }
 
 //Listen operators
@@ -118,14 +162,23 @@ operators.forEach(element => {
 //Display Output
 
 function displayOutput (){
+
     display.textContent = firstNumber.join('').toString();
+
+    if(operatorClicked) {
+        display.textContent = operator.toString();
+    }
+    else if(firstNumberisSet){
+        display.textContent = secondNumber.join('').toString();
+    }
+
     console.log(`Lenght: ${firstNumber.length}`)
     console.log(`Type of: ${typeof(firstNumber)}`)
     console.log(`First number: ${firstNumber}`)
     console.log(`Operator ${operator}`)
-    // console.log(`Lenght: ${secondNumber.length}`)
-    // console.log(`Type of: ${typeof(secondNumber)}`)
-    // console.log(`First number: ${secondNumber}`)
+    console.log(`Lenght: ${secondNumber.length}`)
+    console.log(`Type of: ${typeof(secondNumber)}`)
+    console.log(`Second number: ${secondNumber}`)
 }
 
 displayOutput()
