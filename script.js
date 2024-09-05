@@ -13,7 +13,7 @@ const operands = document.querySelectorAll('.operand')
 const zero = document.getElementById('zero')
 
 const decimal = document.querySelector('.decimal')
-const equals = document.getElementsByClassName('.equals')
+const equals = document.querySelector('.equals')
 
 
 
@@ -21,10 +21,11 @@ let firstNumber = Array (1).fill(0);
 let firstNumberisSet = false;
 
 let secondNumber = Array (1).fill(0);
+let secondNumberisSet = false;
 
 let operator = Array (1).fill(0);
 let operatorClicked = false;
-let rezult =[];
+let result = "";
 
 //Add listener to clear all
 
@@ -33,8 +34,12 @@ clear.addEventListener('click', ()=> {
     firstNumberisSet = false;
 
     secondNumber = [0];
+    secondNumberisSet = false;
+
     operator = [0];
     operatorClicked = false;
+
+    result = "";
 
     operands.forEach(element => element.removeEventListener('click', setSecondNumber))
 
@@ -108,25 +113,22 @@ function setFirstNumber(event){
 
    if(firstNumber.length >5){
         firstNumber = firstNumber
-    displayOutput()
-
    } else if (firstNumber[0] == 0 && firstNumber.length == 1){
     firstNumber.fill(event.target.value)
-    console.log(firstNumber)
-    displayOutput()
-
    } else {
     firstNumber.push(event.target.value)
-    displayOutput()
-
    }
+
+   displayOutput()
+
 }
 
 //Set second number
 function setSecondNumber(event){
 
-    firstNumberisSet = true;
-    operatorClicked = false;
+    secondNumberisSet = true;
+    //pakeitimas is false i true
+    // operatorClicked = true;
 
     operators.forEach(element => {
         element.removeEventListener ('click', setOperator);
@@ -134,32 +136,25 @@ function setSecondNumber(event){
 
     if(secondNumber.length >5){
          secondNumber = secondNumber
-     displayOutput()
- 
     } else if (secondNumber[0] == 0 && secondNumber.length == 1){
      secondNumber.fill(event.target.value)
-     console.log(secondNumber)
-     displayOutput()
- 
     } else {
      secondNumber.push(event.target.value)
-     console.log(secondNumber)
-     displayOutput()
- 
     }
+    displayOutput()
+
  }
 
 
 //Function get operator
 
 let setOperator = function operatorSet (event){
-
+    firstNumberisSet = true
+    operatorClicked = true;
 
     operator.fill(event.target.value)
     operators.forEach(btn => btn.classList.remove('clicked'))
     event.target.classList.toggle('clicked')
-
-    operatorClicked = true;
 
     operands.forEach(element => element.removeEventListener('click', setFirstNumber))
 
@@ -173,27 +168,121 @@ operators.forEach(element => {
     element.addEventListener ('click', setOperator);
 });
 
+equals.addEventListener('click', calculate)
+
+//Funtion calculate rezult
+function calculate () {
+
+    console.log(firstNumberisSet)
+    console.log(secondNumberisSet)
+
+
+    if(firstNumberisSet && secondNumberisSet){
+        let num1 = Number(firstNumber.join(''))
+        let num2 = Number(secondNumber.join(''))
+    
+        let oper = operator[0]
+    
+        result = oper === '+' ? num1 + num2 :
+                 oper === '-' ? num1 - num2 :
+                 oper === '*' ? num1 * num2 :
+                 oper === '/' ? num1 / num2 :
+                 oper === '%' ? num1 % num2 :
+                 'Invalid operator';
+    
+                //  console.log(rezult)
+
+    }
+
+    result = result.toString();
+    firstNumber = result.split('')
+    
+
+    console.log(result)
+    console.log(`Type of ${result}`)
+
+    displayOutput()
+
+    firstNumberisSet = true;
+
+    secondNumber = Array (1).fill(0);
+    secondNumberisSet = false;
+
+    operator = [0];
+    operatorClicked = false;
+
+    result = "";
+
+    operands.forEach(element => element.removeEventListener('click', setFirstNumber))
+
+    operands.forEach(element => element.removeEventListener('click', setSecondNumber))
+
+    operators.forEach(element => element.addEventListener('click', setOperator))
+
+    operators.forEach(btn => btn.classList.remove('clicked'))
+
+    
+}
 
 
 //Display Output
 
 function displayOutput (){
 
-    display.textContent = firstNumber.join('').toString();
+    // let displaying = function dspl (item) {
+    //      display.textContent = item.join('').toString()
+    // }
 
-    if(operatorClicked) {
-        display.textContent = operator.toString();
+    // if(result > 0 ) display.textContent = result ;
+
+    // if(operatorClicked && firstNumberisSet && secondNumberisSet) displaying(secondNumber)
+
+    // if(firstNumberisSet && operatorClicked) displaying(operator)
+
+    // if(firstNumberisSet) display.textContent = firstNumber.join('').toString();
+    
+
+    if(result > 0) {
+        display.textContent = result;
+        console.log(result)
     }
-    else if(firstNumberisSet){
+
+    else if(operatorClicked && firstNumberisSet && secondNumberisSet){
         display.textContent = secondNumber.join('').toString();
     }
 
-    console.log(`1st Lenght: ${firstNumber.length}`)
-    console.log(`1st Type of: ${typeof(firstNumber)}`)
+    else if (firstNumberisSet && operatorClicked) {
+        display.textContent = operator.toString();
+    }
+
+    else if (!firstNumberisSet){
+        display.textContent = firstNumber.join('').toString();
+
+    }
+    
+    // if(!firstNumberisSet){
+    //     display.textContent = firstNumber.join('').toString();
+    // }
+
+    // else if(firstNumberisSet && operatorClicked) {
+    //     display.textContent = operator.toString();
+    // }
+    // else if(operatorClicked && firstNumberisSet && secondNumberisSet){
+    //     display.textContent = secondNumber.join('').toString();
+    // }
+
+    // else if (result > 0){
+    //     display.textContent = result;
+    //     console.log(result)
+    // }
+
+
+    // console.log(`1st Lenght: ${firstNumber.length}`)
+    // console.log(`1st Type of: ${typeof(firstNumber)}`)
     console.log(`1st irst number: ${firstNumber}`)
     console.log(`Operator ${operator}`)
-    console.log(`2nd Lenght: ${secondNumber.length}`)
-    console.log(`2nd Type of: ${typeof(secondNumber)}`)
+    // console.log(`2nd Lenght: ${secondNumber.length}`)
+    // console.log(`2nd Type of: ${typeof(secondNumber)}`)
     console.log(`2nd Second number: ${secondNumber}`)
 }
 
