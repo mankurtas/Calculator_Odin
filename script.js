@@ -20,12 +20,21 @@ const equals = document.querySelector('.equals')
 let firstNumber = Array (1).fill(0);
 let firstNumberisSet = false;
 
-let secondNumber = Array (1).fill(0);
+let secondNumber = []
 let secondNumberisSet = false;
 
-let operator = Array (1).fill(0);
+let operator = [Array (1).fill(0)];
 let operatorClicked = false;
+
 let result = "";
+let resultCalculated = false;
+
+
+//Function to remove event Listener
+
+function removeListener (item, fnc) {
+    item.removeEventListener('click', fnc)
+}
 
 //Add listener to clear all
 
@@ -33,7 +42,7 @@ clear.addEventListener('click', ()=> {
     firstNumber = [0];
     firstNumberisSet = false;
 
-    secondNumber = [0];
+    secondNumber = [];
     secondNumberisSet = false;
 
     operator = [0];
@@ -52,6 +61,7 @@ clear.addEventListener('click', ()=> {
     displayOutput()
 
 })
+
 
 //Add listener to toggle sign
 
@@ -91,7 +101,7 @@ function setDecimal(event) {
         firstNumber.push(event.target.value)
         console.log(firstNumber)
     } 
-    else if (!isSecondNumber && firstNumberisSet){
+    else if (!isSecondNumber && firstNumberisSet && operatorClicked && secondNumber.length !==0){
         secondNumber.push(event.target.value)
         console.log(secondNumber)
     }
@@ -100,6 +110,7 @@ function setDecimal(event) {
 }
 // Listen Decimal
 decimal.addEventListener('click', setDecimal)
+
 
 //Listen operands first time:
 
@@ -127,12 +138,6 @@ function setFirstNumber(event){
 function setSecondNumber(event){
 
     secondNumberisSet = true;
-    //pakeitimas is false i true
-    // operatorClicked = true;
-
-    operators.forEach(element => {
-        element.removeEventListener ('click', setOperator);
-    });
 
     if(secondNumber.length >5){
          secondNumber = secondNumber
@@ -141,11 +146,12 @@ function setSecondNumber(event){
     } else {
      secondNumber.push(event.target.value)
     }
+
+    equals.addEventListener('click',  calculate)
+
     displayOutput()
 
  }
-
-
 //Function get operator
 
 let setOperator = function operatorSet (event){
@@ -155,8 +161,6 @@ let setOperator = function operatorSet (event){
     operator.fill(event.target.value)
     operators.forEach(btn => btn.classList.remove('clicked'))
     event.target.classList.toggle('clicked')
-
-    operands.forEach(element => element.removeEventListener('click', setFirstNumber))
 
     operands.forEach(element => element.addEventListener('click', setSecondNumber))
     displayOutput()
@@ -168,122 +172,87 @@ operators.forEach(element => {
     element.addEventListener ('click', setOperator);
 });
 
-equals.addEventListener('click', calculate)
-
 //Funtion calculate rezult
 function calculate () {
 
-    console.log(firstNumberisSet)
-    console.log(secondNumberisSet)
+    removeListener(equals, calculate)
 
+    let num1 = Number(firstNumber.join(''))
+    let num2 = Number(secondNumber.join(''))
 
-    if(firstNumberisSet && secondNumberisSet){
-        let num1 = Number(firstNumber.join(''))
-        let num2 = Number(secondNumber.join(''))
-    
-        let oper = operator[0]
-    
-        result = oper === '+' ? num1 + num2 :
+    let oper = operator[0]
+
+    result = oper === '+' ? num1 + num2 :
                  oper === '-' ? num1 - num2 :
                  oper === '*' ? num1 * num2 :
                  oper === '/' ? num1 / num2 :
                  oper === '%' ? num1 % num2 :
                  'Invalid operator';
-    
-                //  console.log(rezult)
-
-    }
 
     result = result.toString();
     firstNumber = result.split('')
-    
-
-    console.log(result)
-    console.log(`Type of ${result}`)
-
-    displayOutput()
-
+ 
     firstNumberisSet = true;
 
-    secondNumber = Array (1).fill(0);
+    secondNumber = [];
     secondNumberisSet = false;
 
     operator = [0];
     operatorClicked = false;
+    resultCalculated = true
 
-    result = "";
+    displayOutput()
 
-    operands.forEach(element => element.removeEventListener('click', setFirstNumber))
-
-    operands.forEach(element => element.removeEventListener('click', setSecondNumber))
-
-    operators.forEach(element => element.addEventListener('click', setOperator))
-
-    operators.forEach(btn => btn.classList.remove('clicked'))
-
-    
 }
-
 
 //Display Output
 
 function displayOutput (){
 
-    // let displaying = function dspl (item) {
-    //      display.textContent = item.join('').toString()
-    // }
-
-    // if(result > 0 ) display.textContent = result ;
-
-    // if(operatorClicked && firstNumberisSet && secondNumberisSet) displaying(secondNumber)
-
-    // if(firstNumberisSet && operatorClicked) displaying(operator)
-
-    // if(firstNumberisSet) display.textContent = firstNumber.join('').toString();
-    
-
-    if(result > 0) {
+    if(resultCalculated){
         display.textContent = result;
-        console.log(result)
+        resultCalculated = false;
+
+        operators.forEach(btn => btn.classList.remove('clicked'))
+
+        operators.forEach(element => element.addEventListener('click', setOperator))
+        operands.forEach(element => element.removeEventListener('click', setSecondNumber))
+
+        
+
+        console.log('display Result')
     }
 
     else if(operatorClicked && firstNumberisSet && secondNumberisSet){
         display.textContent = secondNumber.join('').toString();
+        operators.forEach(element => {element.removeEventListener ('click', setOperator);});
+
+        console.log('display Second No')
     }
 
     else if (firstNumberisSet && operatorClicked) {
         display.textContent = operator.toString();
+        operands.forEach(element => element.removeEventListener('click', setFirstNumber))
+        operands.forEach(element => element.addEventListener('click', setSecondNumber))
+
+        console.log('display Operator')
     }
 
     else if (!firstNumberisSet){
         display.textContent = firstNumber.join('').toString();
 
+        console.log('display First Number')
+
     }
     
-    // if(!firstNumberisSet){
-    //     display.textContent = firstNumber.join('').toString();
-    // }
-
-    // else if(firstNumberisSet && operatorClicked) {
-    //     display.textContent = operator.toString();
-    // }
-    // else if(operatorClicked && firstNumberisSet && secondNumberisSet){
-    //     display.textContent = secondNumber.join('').toString();
-    // }
-
-    // else if (result > 0){
-    //     display.textContent = result;
-    //     console.log(result)
-    // }
-
-
     // console.log(`1st Lenght: ${firstNumber.length}`)
     // console.log(`1st Type of: ${typeof(firstNumber)}`)
     console.log(`1st irst number: ${firstNumber}`)
-    console.log(`Operator ${operator}`)
-    // console.log(`2nd Lenght: ${secondNumber.length}`)
-    // console.log(`2nd Type of: ${typeof(secondNumber)}`)
+    // console.log(`First Is Set: ${firstNumberisSet}`)
+    console.log(`Operator: ${operator}`)
+    // console.log(`Operator is Set: ${operatorClicked}`)
     console.log(`2nd Second number: ${secondNumber}`)
-}
+    // console.log(`2nd Second is set: ${secondNumberisSet}`)
+}   
 
 displayOutput()
