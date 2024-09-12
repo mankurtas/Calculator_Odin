@@ -122,7 +122,7 @@ operands.forEach(element => {
 
 function setFirstNumber(event){
 
-   if(firstNumber.length >5){
+   if(firstNumber.length >8){
         firstNumber = firstNumber
    } else if (firstNumber[0] == 0 && firstNumber.length == 1){
     firstNumber.fill(event.target.value)
@@ -139,7 +139,7 @@ function setSecondNumber(event){
 
     secondNumberisSet = true;
 
-    if(secondNumber.length >5){
+    if(secondNumber.length >8){
          secondNumber = secondNumber
     } else if (secondNumber[0] == 0 && secondNumber.length == 1){
      secondNumber.fill(event.target.value)
@@ -188,6 +188,11 @@ function calculate () {
                  oper === '/' ? num1 / num2 :
                  oper === '%' ? num1 % num2 :
                  'Invalid operator';
+
+    // result = Number(result).toPrecision(5)
+    
+
+    // result = Number(result).toExponential(3)
 
     result = result.toString();
     firstNumber = result.split('')
@@ -256,3 +261,9 @@ function displayOutput (){
 }   
 
 displayOutput()
+
+//Viskas veikia
+//Kiti darba
+//1. +/- veikimas kai First number tampa rezult, ai gal nereikia
+//2. Procentu veikimas
+//3. Limituoti Atsakymo ilgi
